@@ -7,28 +7,48 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Role {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+enum CallType {
+  INCOMING
+  OUTGOING
+}
+
+enum Sentiment {
+  POSITIVE
+  NEGATIVE
+  NEUTRAL
+}
+
 model User {
   id        Int     @id @default(autoincrement())
+  name      String
   email     String  @unique
-  password  String
-  role      Role    @default(employee)
+  password  String   
+  role      Role     @default(EMPLOYEE)
+  username  String   
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  callLogs  CallLog[]
+  @@unique([id,username])
 }
 
 model CallLog {
   id            Int      @id @default(autoincrement())
-  employeeName  String
+  employee      User     @relation(fields: [employeeId,employeeUsername], references: [id,username])
+  employeeId    Int
+  employeeUsername String
   phoneNumber   String
-  callType      String
+  callType      CallType
   duration      Int
   timestamp     DateTime @default(now())
-  sentiment     String
+  sentiment     Sentiment
   transcript    String?
   audioUrl      String
-}
-
-enum Role {
-  admin
-  manager
-  employee
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
