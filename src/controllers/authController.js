@@ -10,7 +10,7 @@ const signup = async (req, res) => {
     const { error } = validateSignup(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
-    const { email, password, role } = req.body;
+    const { email, password, role ,name,} = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
