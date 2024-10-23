@@ -3,22 +3,33 @@ const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/jwt');
 const { validateSignup, validateLogin } = require('../utils/validation');
 const prisma = new PrismaClient();
-const rateLimiter = require('rate-limiter-flexible');
 
 const signup = async (req, res) => {
   try {
     const { error } = validateSignup(req.body);
-    if (error) return res.status(400).json({ error: error.details[0].message });
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
 
-    const { email, password, role ,name,} = req.body;
+    const { email, password, role, name, username } = req.body;
+
+    const validRole = role.toUpperCase();
+    if (!['ADMIN', 'EMPLOYEE'].includes(validRole)) {
+      return res.status(400).json({ error: 'Invalid role' });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
-      data: { email, password: hashedPassword, role },
+      data: { email, password: hashedPassword, role:validRole, name, username },
     });
-    res.status(201).json(user);
+
+    const token = generateToken(user);
+
+    res.status(201).json({ user, token, message: "User created successfully" });
   } catch (error) {
-    res.status(400).json({ error: 'User creation failed' });
+    console.error('Signup Error:', error);
+    res.status(500).json({ error: 'User creation failed' });
   }
 };
 

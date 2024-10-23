@@ -5,7 +5,7 @@ const signupSchema = Joi.object({
   username:Joi.string(),
   email: Joi.string().email().required(),
   password: Joi.string().min(8).required(),
-  role: Joi.string().valid('admin', 'manager', 'employee').required(),
+  role: Joi.string().valid('admin', 'employee').required(),
 });
 
 const loginSchema = Joi.object({

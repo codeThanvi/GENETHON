@@ -32,15 +32,12 @@ model User {
   username  String   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  callLogs  CallLog[]
   @@unique([id,username])
 }
 
 model CallLog {
   id            Int      @id @default(autoincrement())
-  employee      User     @relation(fields: [employeeId,employeeUsername], references: [id,username])
-  employeeId    Int
-  employeeUsername String
+  Name          String
   phoneNumber   String
   callType      CallType
   duration      Int
