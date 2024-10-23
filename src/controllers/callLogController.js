@@ -68,24 +68,6 @@ const incomingCalls = async (req, res) => {
   }
 };
 
-// Filter call logs by date range
-const callLogsByDateRange = async (req, res) => {
-  const { startDate, endDate } = req.query;
-  try {
-    const logs = await prisma.callLog.findMany({
-      where: {
-        timestamp: {
-          gte: new Date(startDate),
-          lte: new Date(endDate),
-        },
-      },
-    });
-    res.json(logs);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to retrieve call logs by date range' });
-  }
-};
 
 // Sentiment analysis breakdown
 const sentimentBreakdown = async (req, res) => {
@@ -222,7 +204,6 @@ module.exports = {
   averageCallTime,
   outgoingCalls,
   incomingCalls,
-  callLogsByDateRange,
   sentimentBreakdown,
   longestCall,
   callsByUser,

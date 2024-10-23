@@ -1,11 +1,11 @@
 const express = require('express');
+const { verifyToken,checkRole } = require('../utils/jwt');
 const {
   getAllLogs,
   recentCallLogs,
   averageCallTime,
   outgoingCalls,
   incomingCalls,
-  callLogsByDateRange,
   sentimentBreakdown,
   longestCall,
   callsByUser,
@@ -17,7 +17,7 @@ const {
   paginatedCallLogs,
 } = require('../controllers/callLogController');
 
-import { verifyToken } from '../utils/jwt';
+
 
 const router = express.Router();
 
@@ -26,7 +26,6 @@ router.get('/logs/recent',verifyToken,checkRole(['ADMIN','EMPLOYEE']), recentCal
 router.get('/logs/average-time',verifyToken,checkRole(['ADMIN','EMPLOYEE']), averageCallTime);
 router.get('/logs/outgoing',verifyToken,checkRole(['ADMIN','EMPLOYEE']), outgoingCalls);
 router.get('/logs/incoming',verifyToken,checkRole(['ADMIN','EMPLOYEE']), incomingCalls);
-router.get('/logs/date-range',verifyToken,checkRole(['ADMIN','EMPLOYEE']), callLogsByDateRange);
 router.get('/logs/sentiment-breakdown',verifyToken,checkRole(['ADMIN','EMPLOYEE']), sentimentBreakdown);
 router.get('/logs/longest',verifyToken,checkRole(['ADMIN','EMPLOYEE']), longestCall);
 router.get('/logs/user/:username',verifyToken,checkRole(['ADMIN','EMPLOYEE']), callsByUser);
