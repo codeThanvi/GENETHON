@@ -14,7 +14,14 @@ const getAllLogs = async (req, res) => {
 
 const recentCallLogs = async (req, res) => {
   try {
-    const logs = await prisma.callLog.findMany();
+    const logs = await prisma.callLog.findMany(
+      {
+        orderBy:{
+          createdAt:'desc'
+        },
+        take:10
+      }
+    );
     res.json(logs);
   } catch (error) {
     console.error(error);
