@@ -23,8 +23,7 @@ async function main() {
     for (let j = 0; j < 3; j++) { // 3 calls per user
       await prisma.callLog.create({
         data: {
-          employeeId: user.id,
-          employeeUsername: user.username,
+          Name: user.name, // Using the user's name in CallLog
           phoneNumber: faker.phone.number('+1-###-###-####'),
           callType: j % 2 === 0 ? 'INCOMING' : 'OUTGOING',
           duration: faker.number.int({ min: 30, max: 3600 }), // Call duration in seconds
