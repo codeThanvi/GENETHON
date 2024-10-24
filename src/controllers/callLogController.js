@@ -93,17 +93,6 @@ const longestCall = async (req, res) => {
   }
 };
 
-// Get calls by user
-const callsByUser = async (req, res) => {
-  const { username } = req.params;
-  try {
-    const logs = await prisma.callLog.findMany({ where: { Name: username } });
-    res.json(logs);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to retrieve calls by user' });
-  }
-};
 
 // Get daily call volume
 const dailyCallVolume = async (req, res) => {
@@ -179,7 +168,7 @@ const searchByTranscript = async (req, res) => {
   }
 };
 
-// Get paginated call logs
+
 const paginatedCallLogs = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.pageSize) || 10;
@@ -206,7 +195,7 @@ module.exports = {
   incomingCalls,
   sentimentBreakdown,
   longestCall,
-  callsByUser,
+  
   dailyCallVolume,
   averageCallTimePerUser,
   exportCallLogsToCSV,
